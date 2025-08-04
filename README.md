@@ -1,4 +1,4 @@
-# CronSim
+# Crontab Simulation
 This educational project simulates a user's interaction with a job scheduler via a command-line interface. This particular project was chosen to practice automatic manipulation of text files, programming keywords, unit testing, and designing a logger while improving understanding of how an operating sytem functions at a low-level.
 
 ## How to Run
