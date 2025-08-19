@@ -19,24 +19,45 @@ import java.util.Random;
  */
 public class System {
     // Eager initialization
-    private static final System SYSTEM = new System();
+    private static System system;
 
     private static final ProcessManager PROCESSMANAGER = new ProcessManager(2);
     private static Logger logger;
     private static final Cron CRON = new Cron(4);
     private static final CommandLineInterface COMMANDLINEINTERFACE = new CommandLineInterface(5);
-    private static final CpuManager CPUMANAGER = SYSTEM.new CpuManager();
+    private static final CpuManager CPUMANAGER = system.new CpuManager();
 
     private static String systemHostname;
     private static final String tag = "kernel";
     private static final int PID = 1;
 
     /**
-     * Sets the hostname of the system.
+     * Instantiates the System singleton.
+     */
+    private System() {
+    }
+
+    /**
+     * Provides access to the System singleton.
+     * 
+     * @return the System singleton.
+     * @exception TBW
+     */
+    public static System getInstance() throws InstantiationException {
+        if (systemHostname == null) {
+            throw new InstantiationException("System singleton could not be instantiated. Hostname does not exist.");
+        } else {
+            if (system == null) system = new System();
+            return system;
+        }
+    }
+
+    /**
+     * Sets the hsotname of the system.
      * 
      * @param hostname the String indicating the hostname of the system.
      */
-    private System(String hostname) {
+    private void setHostname(String hostname) {
         systemHostname = hostname;
     }
 
@@ -103,17 +124,7 @@ public class System {
             }
         }
     }
-
-    /**
-     * Provides access to the System singleton.
-     * 
-     * @return the System singleton.
-     */
-    public static System getInstance() {
-        return SYSTEM;
-    }
     
-
     /**
      * Increments the cpuUsage by the addend argument.
      * 
@@ -140,8 +151,10 @@ public class System {
 
     /**
      * Initializes the logger.
+     * 
+     * @exception TBW
      */
-    public void startLogger() {
+    public void startLogger() throws InstantiationException {
         // If logger already exists TBW
         logger.setHostname(systemHostname);
         logger.setPID(3);
@@ -168,6 +181,10 @@ public class System {
      * help.
      */
     public static void main(String[] args) {
-        System system = System.getInstance();
+        try {
+            System system = System.getInstance();
+        } catch (InstantiationException e) {
+            java.lang.System.out.println("Oh well...");
+        }
     }
 }

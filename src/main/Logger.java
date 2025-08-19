@@ -55,14 +55,15 @@ public class Logger {
 
     /**
      * getInstance method for the Logger singleton.
+     * 
+     * @exception TBW
      */
-    static Logger getInstance() {
+    static Logger getInstance() throws InstantiationException {
         // Check for hostname and PID attribution
         if (logHostname == null) {
-            java.lang.System.out.println("Logger singleton could not be instantiated. Hostname does not exist.");
+            throw new InstantiationException("Logger singleton could not be instantiated. Hostname does not exist.");
         } else if (logPid == 0) {
-            java.lang.System.out.println("Logger singleton could not be instantiated. PID does not exist.")
-            return null;
+            throw new InstantiationException("Logger singleton could not be instantiated. PID does not exist.");
         } else {
             // Instantiate / Return Logger Singleton
             if (theLogger == null) theLogger = new Logger(logHostname, logPid);
