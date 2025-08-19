@@ -4,8 +4,9 @@ import java.util.Random;
 
 /**
  * Serves as the foundation of the simulation, initializing the
- * Logger, ProcessManager, Cron, and CLI classes and interacting
- * most closely with the ProcessManager.
+ * Logger, ProcessManager, Cron, and CLI classes. Also contains
+ * a nested CpuManager class which operates synchronously to
+ * passively stabilize CPU usage.
  * 
  * @author Landon Reeder
  * @version %I%, %G%
@@ -20,17 +21,23 @@ public class System {
     // Eager initialization
     private static final System SYSTEM = new System();
 
-    private static final Logger LOGGER = new Logger();
-    private static final ProcessManager PROCESSMANAGER = new ProcessManager();
-    private static final Cron CRON = new Cron();
-    private static final CommandLineInterface COMMANDLINEINTERFACE = new CommandLineInterface();
+    private static final ProcessManager PROCESSMANAGER = new ProcessManager(2);
+    private static Logger logger;
+    private static final Cron CRON = new Cron(4);
+    private static final CommandLineInterface COMMANDLINEINTERFACE = new CommandLineInterface(5);
     private static final CpuManager CPUMANAGER = SYSTEM.new CpuManager();
 
+    private static String systemHostname;
+    private static final String tag = "kernel";
+    private static final int PID = 1;
+
     /**
-     * Initializes the System and runs the CPU manager.
+     * Sets the hostname of the system.
+     * 
+     * @param hostname the String indicating the hostname of the system.
      */
-    private System() {
-        // log startup
+    private System(String hostname) {
+        systemHostname = hostname;
     }
 
     /**
@@ -105,26 +112,7 @@ public class System {
     public static System getInstance() {
         return SYSTEM;
     }
-
-    public Logger getLogger() {
-        return LOGGER;
-    }
-
-    public ProcessManager getProcessManager() {
-        return PROCESSMANAGER;
-    }
-
-    public Cron getCron() {
-        return CRON;
-    }
-
-    public CommandLineInterface getCLI() {
-        return COMMANDLINEINTERFACE;
-    }
-
-    public double getCpuUsage() {
-        return CPUMANAGER.getCpuUsage();
-    }
+    
 
     /**
      * Increments the cpuUsage by the addend argument.
@@ -148,6 +136,16 @@ public class System {
      */
     public void startCpuManager() {
         CPUMANAGER.start();
+    }
+
+    /**
+     * Initializes the logger.
+     */
+    public void startLogger() {
+        // If logger already exists TBW
+        logger.setHostname(systemHostname);
+        logger.setPID(3);
+        logger = Logger.getInstance();
     }
 
     /**

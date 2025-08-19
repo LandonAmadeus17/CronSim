@@ -8,11 +8,13 @@ package src.main;
  * 
  */
 public class Cron {
+    private static int pid;
+    
     /**
      * Package-private constructor only to
      * be accessed by the System class.
      */
-    Cron() {
-
+    Cron(int pid) {
+        this.pid = pid;
     }
 }

@@ -7,11 +7,13 @@ package src.main;
  * @version %I%, %G%
  */
 public class ProcessManager {
+    private static int pid;
+    
     /**
      * Package-private constructor only to
      * be accessed by the System class.
      */
-    ProcessManager() {
-        
+    ProcessManager(int pid) {
+        this.pid = pid;
     }
 }

@@ -8,12 +8,14 @@ package src.main;
  * 
  */
 public class CommandLineInterface {
+    private static int pid;
+    
     /**
      * Package-private constructor only to
      * be accessed by the System class.
      */
-    CommandLineInterface() {
-
+    CommandLineInterface(int pid) {
+        this.pid = pid;
     }
 
     
